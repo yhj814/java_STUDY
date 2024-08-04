@@ -7,25 +7,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.app.jdbc.configuration.Configuration;
-import com.app.member.domain.MemberVO;
 import com.app.member.domain.PostVO;
+import com.app.member.domain.ReplyVO;
 
-public class PostDAO{
+public class ReplyDAO {
 	private Connection connection;
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
 
 //	추가하기
-	public void insert(PostVO postVO) {
-		String query = "INSERT INTO TBL_POST " + "ID, POST_TITLE, POST_CONTENT, MEMBER_ID, "
-				+ "VALUES(SEQ_MEMBER.NEXTVAL, ?, ?, ?) ";
+	public void insert(ReplyVO replyVO) {
+		String query = "INSERT INTO TBL_REPLY " + "ID, REPLY_CONTENT, MEMBER_ID, POST_ID "
+				+ "VALUES(SEQ_REPLY.NEXTVAL, ?, ?, ?) ";
 
 		try {
 			connection = Configuration.getConnection();
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, postVO.getpostTitle());
-			preparedStatement.setString(2, postVO.getPostContent());
-			preparedStatement.setInt(3, postVO.getMemberId());
+			preparedStatement.setString(1, replyVO.getReplyContent());
+			preparedStatement.setInt(2, replyVO.getMemberId());
+			preparedStatement.setInt(3, replyVO.getPostId());
 
 			preparedStatement.executeUpdate();
 
@@ -46,11 +46,9 @@ public class PostDAO{
 	}
 
 //  조회하기
-	public PostVO select(Long id) {
-		PostVO postVO = new PostVO();
-		String query = "SELECT ID, POST_TITLE, POST_CONTENT, MEMBER_ID, CREATED_DATE, UPDATED_DATE "
-		+ "FROM TBL_POST "
-		+ "WHERE ID = ? ";
+	public ReplyVO select(Long id) {
+		ReplyVO replyVO = new ReplyVO();
+		String query = "SELECT ID, REPLY_CONTENT, MEMBER_ID, POST_ID " + "FROM TBL_REPLY " + "WHERE ID = ? ";
 		try {
 			connection = Configuration.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -59,14 +57,10 @@ public class PostDAO{
 			resultSet = preparedStatement.executeQuery();
 
 			resultSet.next();
-			postVO.setId(resultSet.getLong("ID"));
-			postVO.setpostTitle(resultSet.getString("POST_TITLE"));
-			postVO.setPostContent(resultSet.getString("POST_CONTENT"));
-			postVO.setMemberId(resultSet.getInt("MEMBER_ID"));
-			postVO.setCreatedDate(resultSet.getString("CREATED_DATE"));
-			postVO.setUpdatedDate(resultSet.getString("UPDATED_DATE"));
-			
-			
+			replyVO.setId(resultSet.getLong("ID"));
+			replyVO.setReplyContent(resultSet.getString("REPLY_CONTENT"));
+			replyVO.setMemberId(resultSet.getInt("MEMBER_ID"));
+			replyVO.setPostId(resultSet.getInt("POST_ID"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,21 +79,21 @@ public class PostDAO{
 				throw new RuntimeException();
 			}
 		}
-		return postVO;
+		return replyVO;
 	}
 
 //  수정하기
-	public void update(PostVO postVO) {
-		String query = "UPDATE TBL_ " + "SET POST_TITLE = ?, POST_CONTENT = ?, MEMBER_ID = ?, " + "WHERE ID = ?";
+	public void update(ReplyVO replyVO) {
+		String query = "UPDATE TBL_ " + "SET REPLY_CONTENT = ?, MEMBER_ID = ?, POST_ID=? " + "WHERE ID = ?";
 
 		try {
 			connection = Configuration.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 
-			preparedStatement.setString(1, postVO.getpostTitle());
-			preparedStatement.setString(2, postVO.getPostContent());
-			preparedStatement.setInt(3, postVO.getMemberId());
-			preparedStatement.setLong(4, postVO.getId());
+			preparedStatement.setString(1, replyVO.getReplyContent());
+			preparedStatement.setInt(2, replyVO.getMemberId());
+			preparedStatement.setInt(3, replyVO.getPostId());
+			preparedStatement.setLong(4, replyVO.getId());
 
 			preparedStatement.executeUpdate();
 
@@ -121,7 +115,7 @@ public class PostDAO{
 
 //  삭제하기
 	public void delete(Long id) {
-		String query = "DELETE FROM TBL_POST WHERE ID = ?";
+		String query = "DELETE FROM TBL_REPLY WHERE ID = ?";
 
 		try {
 			connection = Configuration.getConnection();
@@ -148,14 +142,11 @@ public class PostDAO{
 	}
 
 //  전체 조회하기
-	public ArrayList<PostVO> selectAll() {
-		ArrayList<PostVO> posts = new ArrayList<PostVO>();
-		PostVO postVO = null;
-		//중요 : JOIN 할 테이블을 포함한 현재 테이블, SELECT할 쿼리들까지 알리아스를 이용해 이름을 다 붙여줘야 모호성이 사라진다
-		String query = "SELECT P.ID AS POST_ID, P.POST_TITLE, P.POST_CONTENT, P.MEMBER_ID, M.MEMBER_NAME, "
-				+ "P.CREATED_DATE AS POST_CREATED_DATE, P.UPDATED_DATE AS POST_UPDATED_DATE " 
-				+ "FROM TBL_POST P JOIN TBL_MEMBER M "
-				+ "ON P.MEMBER_ID = M.ID ";
+	public ArrayList<ReplyVO> selectAll() {
+		ArrayList<ReplyVO> replys = new ArrayList<ReplyVO>();
+		ReplyVO replyVO = null;
+		String query = "SELECT ID, REPLY_CONTENT, MEMBER_ID, POST_ID "
+				+ "FROM TBL_REPLY ";
 
 		try {
 			connection = Configuration.getConnection();
@@ -165,16 +156,13 @@ public class PostDAO{
 
 			if (resultSet.next()) {
 				do {
-					postVO = new PostVO();
-					postVO.setId(resultSet.getLong("POST_ID"));
-					postVO.setpostTitle(resultSet.getString("POST_TITLE"));
-					postVO.setPostContent(resultSet.getString("POST_CONTENT"));
-					postVO.setMemberId(resultSet.getInt("MEMBER_ID"));
-					postVO.setMemberName(resultSet.getString("MEMBER_NAME"));
-					postVO.setCreatedDate(resultSet.getString("POST_CREATED_DATE"));
-					postVO.setUpdatedDate(resultSet.getString("POST_UPDATED_DATE"));
-
-					posts.add(postVO);
+					replyVO = new ReplyVO();
+					replyVO.setId(resultSet.getLong("ID"));
+					replyVO.setReplyContent(resultSet.getString("REPLY_CONTENT"));
+					replyVO.setMemberId(resultSet.getInt("MEMBER_ID"));
+					replyVO.setPostId(resultSet.getInt("POST_ID"));
+					
+					replys.add(replyVO);
 
 				} while (resultSet.next());
 			}
@@ -196,6 +184,7 @@ public class PostDAO{
 				throw new RuntimeException();
 			}
 		}
-		return posts;
+		return replys;
 	}
+
 }

@@ -2,6 +2,7 @@ package com.app.view;
 
 import com.app.member.repository.MemberDAO;
 import com.app.member.repository.PostDAO;
+import com.app.member.repository.ReplyDAO;
 
 public class View {
 	public static void main(String[] args) {
@@ -24,6 +25,12 @@ public class View {
 //		PostDAO postDAO =  new PostDAO();
 //		System.out.println(postDAO.selectAll());
 		
+		
+//		ReplyDAO replyDAO = new ReplyDAO();
+//		System.out.println(replyDAO.select(1L));
+		
+		ReplyDAO replyDAO = new ReplyDAO();
+		System.out.println(replyDAO.selectAll());
 		
 	}
 }

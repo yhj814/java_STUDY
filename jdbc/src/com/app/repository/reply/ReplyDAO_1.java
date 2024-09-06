@@ -1,4 +1,4 @@
-package com.app.member.repository;
+package com.app.repository.reply;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,17 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.app.domain.post.PostVO_1;
+import com.app.domain.reply.ReplyVO_1;
 import com.app.jdbc.configuration.Configuration;
-import com.app.member.domain.PostVO;
-import com.app.member.domain.ReplyVO;
 
-public class ReplyDAO {
+public class ReplyDAO_1 {
 	private Connection connection;
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
 
 //	추가하기
-	public void insert(ReplyVO replyVO) {
+	public void insert(ReplyVO_1 replyVO) {
 		String query = "INSERT INTO TBL_REPLY " + "ID, REPLY_CONTENT, MEMBER_ID, POST_ID "
 				+ "VALUES(SEQ_REPLY.NEXTVAL, ?, ?, ?) ";
 
@@ -46,8 +46,8 @@ public class ReplyDAO {
 	}
 
 //  조회하기
-	public ReplyVO select(Long id) {
-		ReplyVO replyVO = new ReplyVO();
+	public ReplyVO_1 select(Long id) {
+		ReplyVO_1 replyVO = new ReplyVO_1();
 		String query = "SELECT ID, REPLY_CONTENT, MEMBER_ID, POST_ID " + "FROM TBL_REPLY " + "WHERE ID = ? ";
 		try {
 			connection = Configuration.getConnection();
@@ -83,7 +83,7 @@ public class ReplyDAO {
 	}
 
 //  수정하기
-	public void update(ReplyVO replyVO) {
+	public void update(ReplyVO_1 replyVO) {
 		String query = "UPDATE TBL_ " + "SET REPLY_CONTENT = ?, MEMBER_ID = ?, POST_ID=? " + "WHERE ID = ?";
 
 		try {
@@ -142,11 +142,12 @@ public class ReplyDAO {
 	}
 
 //  전체 조회하기
-	public ArrayList<ReplyVO> selectAll() {
-		ArrayList<ReplyVO> replys = new ArrayList<ReplyVO>();
-		ReplyVO replyVO = null;
-		String query = "SELECT ID, REPLY_CONTENT, MEMBER_ID, POST_ID "
+	public ArrayList<ReplyVO_1> selectAll() {
+		ArrayList<ReplyVO_1> replys = new ArrayList<ReplyVO_1>();
+		ReplyVO_1 replyVO = null;
+		String query = "SELECT ID, REPLY_CONTENT, MEMBER_ID, POST_ID , CREATED_DATE, UPDATED_DATE "
 				+ "FROM TBL_REPLY ";
+		
 
 		try {
 			connection = Configuration.getConnection();
@@ -156,11 +157,13 @@ public class ReplyDAO {
 
 			if (resultSet.next()) {
 				do {
-					replyVO = new ReplyVO();
+					replyVO = new ReplyVO_1();
 					replyVO.setId(resultSet.getLong("ID"));
 					replyVO.setReplyContent(resultSet.getString("REPLY_CONTENT"));
 					replyVO.setMemberId(resultSet.getInt("MEMBER_ID"));
 					replyVO.setPostId(resultSet.getInt("POST_ID"));
+					replyVO.setCreatedDate(resultSet.getString("CREATED_DATE"));
+					replyVO.setUpdatedDate(resultSet.getString("UPDATED_DATE"));
 					
 					replys.add(replyVO);
 

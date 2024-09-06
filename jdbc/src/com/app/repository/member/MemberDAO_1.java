@@ -1,4 +1,4 @@
-package com.app.member.repository;
+package com.app.repository.member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.app.domain.member.MemberVO_1;
 import com.app.jdbc.configuration.Configuration;
-import com.app.member.domain.MemberVO;
 
-public class MemberDAO {
+public class MemberDAO_1 {
 	
 	//전역변수로 설정하기, 여기서만 쓸것이기 때문에 private 로 설정
 	//import 해주기
@@ -20,7 +20,7 @@ public class MemberDAO {
 
 //추가하기
 //넣는 값 설정 
-	public void insert(MemberVO memberVO) {
+	public void insert(MemberVO_1 memberVO) {
 		//하나하나 다 치지말고 dbeaver 테이블 잡고 sql생성으로 실행값 copy 후 설정 안넣은 값은 Default 값으로 들어감
 		//넣는 값을 정확히 모를때는 넣는 개수에 맞게 ? 해주기	
 		String query = "INSERT INTO TBL_MEMBER " + "(ID, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_NAME, MEMBER_AGE, MEMBER_GENDER"
@@ -67,8 +67,8 @@ public class MemberDAO {
 //  조회하기(한명)
 //	조회는 행 -> 열 순으로 조회함 2차원 배열과 같다고 보면 된다
 //	조회할때 중복값이 없는 pk(ID)로 조회 
-	public MemberVO select(Long id) {
-		MemberVO memberVO = new MemberVO();
+	public MemberVO_1 select(Long id) {
+		MemberVO_1 memberVO = new MemberVO_1();
 //		dbeaver -> sql생성 -> copy 후 수정하기	WHERE로 누구 아이디인지 까지 가져와야한다
 		String query = "SELECT ID, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_NAME ,MEMBER_AGE, MEMBER_GENDER, CREATED_DATE, UPDATED_DATE "
 				+ "FROM TBL_MEMBER " 
@@ -122,7 +122,7 @@ public class MemberDAO {
 
 //  수정하기
 //	수정완료한 정보를 넣어주면 되기떄문에, 수정전 객체 수정한 객체, 두개 만들필요없이 하나만 만들어 set 하면 된다.
-	public void update(MemberVO memberVO) {
+	public void update(MemberVO_1 memberVO) {
 //	dbeaver -> sql생성 -> copy	
 		String query = "UPDATE TBL_MEMBER " + "SET MEMBER_EMAIL = ?, MEMBER_PASSWORD = ?, MEMBER_NAME = ?, "
 				+ "MEMBER_AGE = ?, MEMBER_GENDER = ? ,UPDATED_DATE = SYSDATE " //수정한 날짜는 현재 날짜 
@@ -190,10 +190,10 @@ public class MemberDAO {
 
 //  전체 조회하기
 //	받을 값이 없다
-	public ArrayList<MemberVO> selectAll() {
-		ArrayList<MemberVO> members = new ArrayList<MemberVO>();
+	public ArrayList<MemberVO_1> selectAll() {
+		ArrayList<MemberVO_1> members = new ArrayList<MemberVO_1>();
 		//객체 만들기
-		MemberVO memberVO = null;
+		MemberVO_1 memberVO = null;
 		String query = "SELECT ID, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_NAME, MEMBER_AGE, MEMBER_GENDER, CREATED_DATE, UPDATED_DATE "
 				+ "FROM TBL_MEMBER";
 
@@ -207,7 +207,7 @@ public class MemberDAO {
 				do {
 					//열조회
 					//그다음 반복될때 매번 초기화 하기 위해 new 객체 생성
-					memberVO = new MemberVO();
+					memberVO = new MemberVO_1();
 					memberVO.setId(resultSet.getLong("ID"));
 					memberVO.setMemberEmail(resultSet.getString("MEMBER_EMAIL"));
 					memberVO.setMemberPassword(resultSet.getString("MEMBER_PASSWORD"));

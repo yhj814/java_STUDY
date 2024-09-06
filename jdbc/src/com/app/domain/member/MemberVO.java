@@ -1,11 +1,10 @@
-package com.app.member.domain;
+package com.app.domain.member;
 
 import java.util.Objects;
 
-//dbeaver에서 만든 테이블을 토대로 VO를 구성한다 
 public class MemberVO {
-	private Long id; //PK
-	private String memberEmail;	
+	private Long id;
+	private String memberEmail;
 	private String memberPassword;
 	private String memberName;
 	private int memberAge;
@@ -85,11 +84,11 @@ public class MemberVO {
 	public String toString() {
 		return "MemberVO [id=" + id + ", memberEmail=" + memberEmail + ", memberPassword=" + memberPassword
 				+ ", memberName=" + memberName + ", memberAge=" + memberAge + ", memberGender=" + memberGender
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate  + "]"+ "\n";
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 
 	@Override
-	public int hashCode() {		//id만 비교할것이기때문에 PK 만 받아와야한다
+	public int hashCode() {
 		return Objects.hash(id);
 	}
 

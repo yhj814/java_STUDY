@@ -1,4 +1,4 @@
-package com.app.member.repository;
+package com.app.repository.post;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,17 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.app.domain.member.MemberVO_1;
+import com.app.domain.post.PostVO_1;
 import com.app.jdbc.configuration.Configuration;
-import com.app.member.domain.MemberVO;
-import com.app.member.domain.PostVO;
 
-public class PostDAO{
+public class PostDAO_1{
 	private Connection connection;
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
 
 //	추가하기
-	public void insert(PostVO postVO) {
+	public void insert(PostVO_1 postVO) {
 		String query = "INSERT INTO TBL_POST " + "ID, POST_TITLE, POST_CONTENT, MEMBER_ID, "
 				+ "VALUES(SEQ_MEMBER.NEXTVAL, ?, ?, ?) ";
 
@@ -46,8 +46,9 @@ public class PostDAO{
 	}
 
 //  조회하기
-	public PostVO select(Long id) {
-		PostVO postVO = new PostVO();
+//	DTO써보기
+	public PostVO_1 select(Long id) {
+		PostVO_1 postVO = new PostVO_1();
 		String query = "SELECT ID, POST_TITLE, POST_CONTENT, MEMBER_ID, CREATED_DATE, UPDATED_DATE "
 		+ "FROM TBL_POST "
 		+ "WHERE ID = ? ";
@@ -89,7 +90,7 @@ public class PostDAO{
 	}
 
 //  수정하기
-	public void update(PostVO postVO) {
+	public void update(PostVO_1 postVO) {
 		String query = "UPDATE TBL_ " + "SET POST_TITLE = ?, POST_CONTENT = ?, MEMBER_ID = ?, " + "WHERE ID = ?";
 
 		try {
@@ -148,9 +149,9 @@ public class PostDAO{
 	}
 
 //  전체 조회하기
-	public ArrayList<PostVO> selectAll() {
-		ArrayList<PostVO> posts = new ArrayList<PostVO>();
-		PostVO postVO = null;
+	public ArrayList<PostVO_1> selectAll() {
+		ArrayList<PostVO_1> posts = new ArrayList<PostVO_1>();
+		PostVO_1 postVO = null;
 		//중요 : JOIN 할 테이블을 포함한 현재 테이블, SELECT할 쿼리들까지 알리아스를 이용해 이름을 다 붙여줘야 모호성이 사라진다
 		String query = "SELECT P.ID AS POST_ID, P.POST_TITLE, P.POST_CONTENT, P.MEMBER_ID, M.MEMBER_NAME, "
 				+ "P.CREATED_DATE AS POST_CREATED_DATE, P.UPDATED_DATE AS POST_UPDATED_DATE " 
@@ -165,7 +166,7 @@ public class PostDAO{
 
 			if (resultSet.next()) {
 				do {
-					postVO = new PostVO();
+					postVO = new PostVO_1();
 					postVO.setId(resultSet.getLong("POST_ID"));
 					postVO.setpostTitle(resultSet.getString("POST_TITLE"));
 					postVO.setPostContent(resultSet.getString("POST_CONTENT"));

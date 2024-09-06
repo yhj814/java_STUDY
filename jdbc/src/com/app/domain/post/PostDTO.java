@@ -1,19 +1,17 @@
-package com.app.member.domain;
+package com.app.domain.post;
 
 import java.util.Objects;
 
-//MemberVO를 상속받아야 게시물 작성자 맴버 정보를 가져올 수 있다
-public class PostVO extends MemberVO{
+public class PostDTO {
 	private Long id;
 	private String postTitle;
 	private String postContent;
-	private int memberId;
+	private int readCount;
+	private String memberName;
 	private String createdDate;
 	private String updatedDate;
-
-	public PostVO() {
-		;
-	}
+	
+	public PostDTO() {;}
 
 	public Long getId() {
 		return id;
@@ -23,12 +21,12 @@ public class PostVO extends MemberVO{
 		this.id = id;
 	}
 
-	public String getpostTitle() {
+	public String getPostTitle() {
 		return postTitle;
 	}
 
-	public void setpostTitle(String title) {
-		this.postTitle = title;
+	public void setPostTitle(String postTitle) {
+		this.postTitle = postTitle;
 	}
 
 	public String getPostContent() {
@@ -39,33 +37,44 @@ public class PostVO extends MemberVO{
 		this.postContent = postContent;
 	}
 
-	public int getMemberId() {
-		return memberId;
+	public int getReadCount() {
+		return readCount;
 	}
 
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
+	public void setReadCount(int readCount) {
+		this.readCount = readCount;
 	}
-	
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
 
 	public String getUpdatedDate() {
-		return updatedDate; 
+		return updatedDate;
 	}
 
 	public void setUpdatedDate(String updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 
-	//getter setter 에 재정의 할 필요없이 memberVO를 상속 받았기 떄문에 toString에서 가져올 값만 가져와 입력하면 된다
 	@Override
 	public String toString() {
-		return "PostVO [id=" + id + ", postTitle=" + postTitle + ", postContent=" + postContent + ", memberId="
-				+ memberId + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", MemberName()="
-				+ getMemberName() + "]"+"\n";
-	}// alt + shift + s  toString 에서 선택해 가져오면된다
+		return "PostVO [id=" + id + ", postTitle=" + postTitle + ", postContent=" + postContent + ", readCount="
+				+ readCount + ", memberName=" + memberName + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
+				+ "]";
+	}
 
 	@Override
 	public int hashCode() {
@@ -80,8 +89,7 @@ public class PostVO extends MemberVO{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PostVO other = (PostVO) obj;
+		PostDTO other = (PostDTO) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }
